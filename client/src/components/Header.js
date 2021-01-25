@@ -1,7 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import cartStore from '../store/cart'
+
+import shoppingCart from '../assets/images/shopping-cart-dark.svg'
+
 const Header = () => {
+  const { items } = cartStore()
+  
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -32,6 +38,11 @@ const Header = () => {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/register">Register</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/cart">
+                  <img src={ shoppingCart } /> Cart { items }
+                </Link>
               </li>
             </ul> 
           </div>

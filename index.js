@@ -1,13 +1,9 @@
-/* import express from 'express'
-import mongoose from 'mongoose'
-import path from 'path'
-import routes from './routes/api'
-import dotenv from 'dotenv'
-dotenv.config() */
 const express = require('express')
 const mongoose = require('mongoose')
-const routes = require('./routes/api')
+const apiRoute = require('./routes/api')
+const authRoute = require('./routes/auth')
 const path = require('path')
+const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
@@ -20,13 +16,16 @@ mongoose.connect(process.env.DB, {useNewUrlParser: true})
 
 mongoose.Promise = global.Promise
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
-})
+}) */
 
-app.use('/api', routes)
+app.use(express.json())
+app.use(cors())
+app.use('/api', apiRoute)
+app.use(authRoute)
 
 app.use((req, res, next) => {
   res.send('Welcome to server')

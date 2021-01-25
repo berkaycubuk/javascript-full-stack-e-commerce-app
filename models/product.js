@@ -1,12 +1,12 @@
-// import mongoose from 'mongoose'
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ProductSchema = new Schema({
-  title: {
-    type: String,
-    required: [true, 'Title field is required']
-  }
+  slug: String,
+  title: String,
+  description: String,
+  price: Number,
+  stock: Number
 })
 
 const Product = mongoose.model('product', ProductSchema)
