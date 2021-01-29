@@ -31,7 +31,6 @@ const ProductPage = () => {
       .then(res => {
         setProduct(res.data)
         setFetched(true)
-        console.log(product)
       })
   }
 

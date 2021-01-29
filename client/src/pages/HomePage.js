@@ -24,7 +24,6 @@ const HomePage = () => {
       .then(res => {
         setProducts(res.data)
         setFetched(true)
-        console.log(products)
       })
   }
 

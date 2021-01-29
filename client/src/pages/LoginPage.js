@@ -1,10 +1,25 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
+import Cookies from 'js-cookie'
+import jwt from 'jsonwebtoken'
+
+import userStore from '../store/user'
 
 const LoginPage = () => {
+  const { setUser } = userStore()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [message, setMessage] = useState()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const token = Cookies.get('token')
+
+    if (token != null) {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -13,13 +28,42 @@ const LoginPage = () => {
     axios.post('http://localhost:5000/api/login', {
       email: email,
       password: password
-    }).then(res => console.log(res))
+    }).then(res => {
+      if (res.data.message) {
+        setMessage({
+          type: 'error',
+          message: 'E-mail or password is wrong'
+        })
+      } else {
+        Cookies.set('token', res.data.token)
+        const user = jwt.decode(res.data.token)
+        setUser({
+          _id: user._id,
+          name: user.name,
+          email: user.email
+        })
+        setMessage({
+          type: 'success',
+          message: 'Successfully logged in'
+        })
+        setIsLoggedIn(true)
+      }
+    })
       .catch(err => console.log(err))
+  }
+
+  if (isLoggedIn) {
+    return <Redirect to='/' />
   }
 
   return (
     <>
       <form className="my-5" onSubmit={handleSubmit}>
+        {message ? 
+          <div className={`alert ${message.type == 'success' ? 'alert-success' : 'alert-danger'}`}>
+            {message.message}
+          </div> : <></>
+        }
         <h3 className="mb-4">Login to your MERN account</h3>
         <div className="form-group">
           <label for="loginEmail">E-mail</label>

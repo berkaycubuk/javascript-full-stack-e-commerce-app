@@ -1,27 +1,59 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
+import Cookies from 'js-cookie'
+
 
 const RegisterPage = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [message, setMessage] = useState()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const token = Cookies.get('token')
+
+    if (token != null) {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
     
-    // post request
     axios.post('http://localhost:5000/api/register', {
       name: name,
       email: email,
       password: password
-    }).then(res => console.log(res))
+    }).then(res => {
+      if (res.message) {
+        setMessage({
+          type: 'error',
+          message: 'This e-mail already exists'
+        })
+      } else {
+        setMessage({
+          type: 'success',
+          message: 'Your account created, please login'
+        })
+      }
+    })
       .catch(err => console.log(err))
+  }
+
+  if (isLoggedIn) {
+    return <Redirect to='/' />
   }
 
   return (
     <>
       <form className="my-5" onSubmit={handleSubmit}>
+        {message ? 
+          <div className={['alert', message.type == 'success' ? 'alert-success' : 'alert-danger' ]}>
+            {message.message}
+          </div> : <></>
+        }
         <h3 className="mb-4">Create new MERN account</h3>
         <div className="form-group">
           <label for="registerName">Name</label>

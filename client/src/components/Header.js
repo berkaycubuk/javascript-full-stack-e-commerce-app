@@ -1,12 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
+import userStore from '../store/user'
 import cartStore from '../store/cart'
 
 import shoppingCart from '../assets/images/shopping-cart.svg'
 
 const Header = () => {
   const { items, itemList, totalPrice } = cartStore()
+  const { user, setUser } = userStore()
+
+  const logout = () => {
+    Cookies.remove('token')
+    setUser(undefined)
+  }
   
   return (
     <header>
@@ -33,20 +41,34 @@ const Header = () => {
               </li>
             </ul> 
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/login">Login</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/register">Register</Link>
-              </li>
+              {user == undefined ? 
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login">Login</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/register">Register</Link>
+                  </li>
+                </> 
+                : 
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">Profile</Link>
+                  </li>
+                  <li className="nav-item">
+                    <a href="#" className="nav-link" onClick={logout}>Logout</a>
+                  </li>
+                </> 
+              }
+              
               <div className="dropdown">
                 <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src={ shoppingCart } /> Cart <span className="badge badge-light">{ items }</span>
+                  <img src={ shoppingCart } /> Cart <span className="badge badge-light">{ itemList.length }</span>
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <div className="list-group">
                     { itemList.map((product, index) => 
-                      <Link to={`/product/${product.slug}`} key={index} class="list-group-item list-group-item-action">{ product.title }</Link>
+                      <Link to={`/product/${product.slug}`} key={index} className="list-group-item list-group-item-action">{ product.title }</Link>
                     ) }
                   </div>
                   <div className="header-total-price">
