@@ -22,6 +22,10 @@ const ProductPage = () => {
   })
   const [fetched, setFetched] = useState(false)
 
+  const addToCart = () => {
+    addNewItem(product)
+  }
+
   if(!fetched) {
     axios.get(`http://localhost:5000/api/products/get/${slug}`)
       .then(res => {
@@ -70,7 +74,7 @@ const ProductPage = () => {
           <div className="product-price">
             { product.price } <span className="product-price-currency">$</span>
           </div>
-          <button type="button" className="btn btn-primary btn-lg my-4" onClick={ addNewItem }><img src={ shoppingCart } className="mr-2" />Add to cart</button>
+          <button type="button" className="btn btn-primary btn-lg my-4" onClick={ addToCart }><img src={ shoppingCart } className="mr-2" />Add to cart</button>
         </div>
       </div>
 

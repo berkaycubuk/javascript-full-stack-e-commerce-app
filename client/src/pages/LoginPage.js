@@ -6,16 +6,15 @@ const LoginPage = () => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value)
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    
+    // post request
+    axios.post('http://localhost:5000/api/login', {
+      email: email,
+      password: password
+    }).then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   return (
@@ -24,11 +23,11 @@ const LoginPage = () => {
         <h3 className="mb-4">Login to your MERN account</h3>
         <div className="form-group">
           <label for="loginEmail">E-mail</label>
-          <input type="email" class="form-control" id="loginEmail" onChange={handleEmailChange} />
+          <input type="email" class="form-control" id="loginEmail" onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="form-group">
           <label for="loginPassword">Password</label>
-          <input type="password" class="form-control" id="loginPassword" onChange={handlePasswordChange} />
+          <input type="password" class="form-control" id="loginPassword" onChange={(e) => setPassword(e.target.value)} />
         </div>
         <div className="form-group form-check">
           <input type="checkbox" class="form-check-input" id="loginRemember" />

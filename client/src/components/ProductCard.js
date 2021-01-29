@@ -8,8 +8,8 @@ const ProductCard = (props) => {
     <div className="card">
       <img src={ productImage } className="card-img-top" alt={ props.product.title } />
       <div className="card-body">
-        <p className="card-text">{ props.product.title }</p>
-        <Link to={ `/product/${props.product.slug}` } className="btn btn-primary">Buy - 100$</Link>
+        <p className="card-text font-weight-bold">{ props.product.title }</p>
+        <Link to={ `/product/${props.product.slug}` } className="btn btn-primary">Buy - { props.product.price }$</Link>
       </div> 
     </div>
   )

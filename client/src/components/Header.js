@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 
 import cartStore from '../store/cart'
 
-import shoppingCart from '../assets/images/shopping-cart-dark.svg'
+import shoppingCart from '../assets/images/shopping-cart.svg'
 
 const Header = () => {
-  const { items } = cartStore()
+  const { items, itemList, totalPrice } = cartStore()
   
   return (
     <header>
@@ -39,11 +39,22 @@ const Header = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/register">Register</Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/cart">
-                  <img src={ shoppingCart } /> Cart { items }
-                </Link>
-              </li>
+              <div className="dropdown">
+                <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src={ shoppingCart } /> Cart <span className="badge badge-light">{ items }</span>
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <div className="list-group">
+                    { itemList.map((product, index) => 
+                      <Link to={`/product/${product.slug}`} key={index} class="list-group-item list-group-item-action">{ product.title }</Link>
+                    ) }
+                  </div>
+                  <div className="header-total-price">
+                    { itemList.length ? 'Total: ' + totalPrice : null }$
+                  </div>
+                  <Link className="dropdown-item" to="/cart">Go to cart</Link>
+                </div>
+              </div>
             </ul> 
           </div>
         </div>
