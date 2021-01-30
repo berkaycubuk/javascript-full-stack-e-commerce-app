@@ -5,6 +5,7 @@ const ProductSchema = new Schema({
   slug: String,
   title: String,
   description: String,
+  images: [],
   price: Number,
   stock: Number
 })

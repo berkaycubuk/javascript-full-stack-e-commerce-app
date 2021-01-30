@@ -17,6 +17,7 @@ import RegisterPage from './pages/RegisterPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import ProfilePage from './pages/ProfilePage'
+import CheckoutDonePage from './pages/CheckoutDone'
 
 function App() {
   const { setUser } = userStore()
@@ -63,6 +64,9 @@ function App() {
           </Route>
           <Route path="/profile">
             <ProfilePage />
+          </Route>
+          <Route path="/checkout-done">
+            <CheckoutDonePage />
           </Route>
           <Route path="/">
             <HomePage />

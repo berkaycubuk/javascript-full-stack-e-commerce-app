@@ -10,6 +10,10 @@ const useStore = create(set => ({
     Cookies.set('cartList', state.itemList)
     return{ items: state.items + 1, itemList: state.itemList, totalPrice: state.totalPrice + item.price }
   }),
+  empty: () => set(() => {
+    Cookies.remove('cartList')
+    return { items: 0, itemList: [], totalPrice: 0 }
+  }),
   deleteItem: (item) => set(state => {
     let found = false
     state.itemList = state.itemList.filter(data => {

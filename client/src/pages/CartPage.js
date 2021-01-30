@@ -1,19 +1,31 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 
 import shoppingCart from '../assets/images/shopping-cart.svg'
 
 import cartStore from '../store/cart'
+import userStore from '../store/user'
 
 const CartPage = () => {
-  const { itemList, totalPrice, deleteItem } = cartStore()
+  const { itemList, totalPrice, deleteItem, empty } = cartStore()
+  const { user } = userStore()
+  const [checkoutDone, setCheckoutDone] = useState(false)
   
   const checkout = () => {
-    console.log('hehe')
+    if (!user) {
+      alert('You have to login to checkout!')
+    }
+
+    empty()
+    setCheckoutDone(true)
   }
 
   const deleteProduct = item => () => {
     deleteItem(item)
+  }
+
+  if (checkoutDone) {
+    return <Redirect to="/checkout-done" />
   }
 
   return (

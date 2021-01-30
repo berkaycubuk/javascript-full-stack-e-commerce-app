@@ -66,14 +66,19 @@ const Header = () => {
                   <img src={ shoppingCart } /> Cart <span className="badge badge-light">{ itemList.length }</span>
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <div className="list-group">
-                    { itemList.map((product, index) => 
-                      <Link to={`/product/${product.slug}`} key={index} className="list-group-item list-group-item-action">{ product.title }</Link>
-                    ) }
-                  </div>
-                  <div className="header-total-price">
-                    { itemList.length ? 'Total: ' + totalPrice : null }$
-                  </div>
+                  { itemList.length > 0 ? 
+                  <>
+                    <div className="list-group">
+                      { itemList.map((product, index) => 
+                        <Link to={`/product/${product.slug}`} key={index} className="list-group-item list-group-item-action">{ product.title }</Link>
+                      ) }
+                    </div>
+                    <div className="header-total-price">
+                      { itemList.length ? 'Total: ' + totalPrice : null }$
+                    </div>
+                  </> : <>
+                    <p class="p-2">Your cart is empty.</p>
+                  </>}
                   <Link className="dropdown-item" to="/cart">Go to cart</Link>
                 </div>
               </div>

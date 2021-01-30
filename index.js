@@ -5,9 +5,11 @@ const mongoose = require('mongoose')
 const bodyparser = require('body-parser')
 const apiRoute = require('./routes/api')
 const User = require('./models/user')
+const Upload = require('./models/upload')
 const { auth } = require('./middlewares/auth')
 const path = require('path')
 const cors = require('cors')
+const fs = require('fs')
 require('dotenv').config()
 
 const app = express()
@@ -71,6 +73,23 @@ app.get('/api/profile', auth, (req, res) => {
     id: req.user._id,
     email: req.user.email,
     name: req.user.name
+  })
+})
+
+app.get('/api/uploads/:slug', (req, res) => {
+  let slug = req.params.slug
+
+  Upload.findOne({
+    slug: slug
+  }, (err, upload) => {
+    if (err) throw err
+    if (!upload) return res.status(400).json({message: 'Upload not found'})
+
+    fs.readFile(`./uploads/${upload.fileName}`, (err, data) => {
+      if (err) throw err
+
+      return res.type('jpg').send(data)
+    })
   })
 })
 
