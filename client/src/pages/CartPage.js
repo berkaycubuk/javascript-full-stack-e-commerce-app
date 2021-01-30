@@ -14,10 +14,10 @@ const CartPage = () => {
   const checkout = () => {
     if (!user) {
       alert('You have to login to checkout!')
+    } else {
+      empty()
+      setCheckoutDone(true)
     }
-
-    empty()
-    setCheckoutDone(true)
   }
 
   const deleteProduct = item => () => {
