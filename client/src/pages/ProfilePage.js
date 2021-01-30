@@ -6,17 +6,20 @@ import userStore from '../store/user'
 
 const ProfilePage = () => {
   const { user } = userStore()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(undefined)
 
   useEffect(() => {
     const token = Cookies.get('token')
 
     if (token != null) {
       setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
     }
   }, [])
 
-  if (!isLoggedIn) {
+  if (isLoggedIn != undefined && !isLoggedIn) {
+    console.log('hello')
     return <Redirect to='/' />
   }
 

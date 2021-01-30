@@ -50,7 +50,7 @@ const RegisterPage = () => {
     <>
       <form className="my-5" onSubmit={handleSubmit}>
         {message ? 
-          <div className={['alert', message.type == 'success' ? 'alert-success' : 'alert-danger' ]}>
+          <div className={`alert ${message.type == 'success' ? 'alert-success' : 'alert-danger'}`}>
             {message.message}
           </div> : <></>
         }
